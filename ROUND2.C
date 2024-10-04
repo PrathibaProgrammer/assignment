@@ -1,0 +1,118 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_EMPLOYEES 100
+#define MAX_NAME_LEN 50
+
+struct Employee {
+    char id[10];
+    char department[20];
+    char gender[10];
+};
+
+
+struct Employee v_nameCollection[MAX_EMPLOYEES];
+struct Employee v_phoneCollection[MAX_EMPLOYEES];
+int v_nameCollection_count = 0;
+int v_phoneCollection_count = 0;
+
+
+void createCollection(struct Employee collection[], int* count) {
+    *count = 0;
+}
+
+int getEmpCount(int count) {
+    return count;
+}
+
+
+void indexData(struct Employee collection[], char* column) {
+    printf("Indexed column '%s' in collection.\n", column);
+}
+
+void delEmpById(struct Employee collection[], int* count, char* emp_id) {
+    int i, j;
+    for (i = 0; i < *count; i++) {
+	if (strcmp(collection[i].id, emp_id) == 0) {
+	    for (j = i; j < *count - 1; j++) {
+		collection[j] = collection[j + 1];
+	    }
+	    (*count)--;
+	    printf("Deleted employee with ID %s.\n", emp_id);
+	    return;
+	}
+    }
+    printf("Employee with ID %s not found.\n", emp_id);
+}
+
+void searchByColumn(struct Employee collection[], int count, char* column, char* value) {
+    int i;
+    printf("Search results for %s = %s:\n", column, value);
+    for (i = 0; i < count; i++) {
+	if ((strcmp(column, "Department") == 0 && strcmp(collection[i].department, value) == 0) ||
+	    (strcmp(column, "Gender") == 0 && strcmp(collection[i].gender, value) == 0)) {
+	    printf("ID: %s, Department: %s, Gender: %s\n", collection[i].id, collection[i].department, collection[i].gender);
+	}
+    }
+}
+
+void getDepFacet(struct Employee collection[], int count) {
+    int it_count = 0, hr_count = 0, i;
+    for (i = 0; i < count; i++) {
+	if (strcmp(collection[i].department, "IT") == 0) {
+	    it_count++;
+	} else if (strcmp(collection[i].department, "HR") == 0) {
+	    hr_count++;
+	}
+    }
+    printf("IT: %d, HR: %d\n", it_count, hr_count);
+
+
+}
+int main() {
+
+    strcpy(v_nameCollection[v_nameCollection_count].id, "E02001");
+    strcpy(v_nameCollection[v_nameCollection_count].department, "IT");
+    strcpy(v_nameCollection[v_nameCollection_count].gender, "Male");
+    v_nameCollection_count++;
+
+    strcpy(v_nameCollection[v_nameCollection_count].id, "E02002");
+    strcpy(v_nameCollection[v_nameCollection_count].department, "HR");
+    strcpy(v_nameCollection[v_nameCollection_count].gender, "Female");
+    v_nameCollection_count++;
+
+    strcpy(v_phoneCollection[v_phoneCollection_count].id, "P04001");
+    strcpy(v_phoneCollection[v_phoneCollection_count].department, "IT");
+    strcpy(v_phoneCollection[v_phoneCollection_count].gender, "Male");
+    v_phoneCollection_count++;
+
+    printf("Employee count in v_nameCollection: %d\n", getEmpCount(v_nameCollection_count));
+
+    indexData(v_nameCollection, "Department");
+
+    indexData(v_phoneCollection, "Gender");
+
+
+    printf("Employee count in v_nameCollection: %d\n", getEmpCount(v_nameCollection_count));
+
+
+    delEmpById(v_nameCollection, &v_nameCollection_count, "E02003");
+
+
+    printf("Employee count in v_nameCollection: %d\n", getEmpCount(v_nameCollection_count));
+
+
+    searchByColumn(v_nameCollection, v_nameCollection_count, "Department", "IT");
+
+
+    searchByColumn(v_nameCollection, v_nameCollection_count, "Gender", "Male");
+
+
+    searchByColumn(v_phoneCollection, v_phoneCollection_count, "Department", "IT");
+
+    getDepFacet(v_nameCollection, v_nameCollection_count);
+
+    getDepFacet(v_phoneCollection, v_phoneCollection_count);
+
+    return 0;
+}
